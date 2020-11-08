@@ -18,9 +18,10 @@ public class UserConverter {
 	public UserBoundary fromEntity(UserEntity entity) {
 		UserBoundary rv = new UserBoundary();
 		UserFullName name = new UserFullName(entity.getFirstName(), entity.getLastName());
-		rv.setName(name);
-		rv.setBirthdate(entity.getBirthdate().toString());
+		rv.setName(name);		
+		rv.setBirthdate(new SimpleDateFormat("dd-MM-yyyy").format(entity.getBirthdate()));
 		rv.setEmail(entity.getEmail());
+		rv.setPassword(entity.getPassword());
 		rv.setRoles(entity.getRoles().toArray(new String[0]));
 
 		return rv;
@@ -32,9 +33,8 @@ public class UserConverter {
 		rv.setLastName(boundary.getName().getLast());
 		//rv.setBirthdate(LocalDate.parse(boundary.getBirthdate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 		try {
-			rv.setBirthdate(new SimpleDateFormat("dd/MM/yyyy").parse(boundary.getBirthdate()));
+			rv.setBirthdate(new SimpleDateFormat("dd-MM-yyyy").parse(boundary.getBirthdate()));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		rv.setEmail(boundary.getEmail());

@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Formula;
-
+import javax.persistence.Id;
 import acs.annotations.NotEmptyFields;
 import acs.annotations.Password;
 
@@ -35,11 +35,11 @@ public class UserEntity {
 	@NotNull
 	private Date birthdate;	// CREATED_TIME_STAMP TIMESTAMP
 	
-	//@NotEmptyFields
+	@NotEmptyFields
 	@ElementCollection(targetClass=String.class)
 	private List<String> roles;
 	
-	@Formula("(TIMESTAMPDIFF(YEAR,DATE_FORMAT(birthdate, '%Y-%m-%d'),CURDATE()))")	
+	@Formula("YEAR(CURDATE()) - YEAR(birthdate)")	
 	private int age;	// calculated field by birth date
 	
 	public UserEntity() {
