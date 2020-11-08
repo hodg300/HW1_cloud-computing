@@ -18,7 +18,7 @@ import acs.logic.utils.UserConverter;
 
 
 
-@Service
+//@Service
 public class UserServiceMockup implements EnhancedUserService {
 	private List<UserEntity> allUsers;
 	private UserConverter userConverter;

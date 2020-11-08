@@ -14,86 +14,65 @@ import acs.logic.UserService;
 import acs.utils.SortBy;
 import acs.utils.SortOrder;
 
-
 @RestController
 public class UserController {
 	private UserService userService;
-	
+
 	@Autowired
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	/*--------------------- GET APIS ------------------- */
 
-	//Get user
-	@RequestMapping(path = "/users/{email}",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	// Get user
+	@RequestMapping(path = "/users/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserBoundary getUser(@PathVariable("email") String email) {
 		return userService.getUser(email);
 	}
-	
-	//login 
-	@RequestMapping(path = "/users/login/{email}?password={password}",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+
+	// login
+	@RequestMapping(path = "/users/login/{email}?password={password}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserBoundary login(@PathVariable("email") String email,
 			@RequestParam(name = "password", required = false) String password) {
-		return userService.login(email,password);
+		return userService.login(email, password);
 	}
-	
-	//Get all users with pagination
-		@RequestMapping(path = "/users/search?size={size}&page={page}&sortBy={sortAttribute}&sortOrder={order}",
-				method = RequestMethod.GET,
-				produces = MediaType.APPLICATION_JSON_VALUE)
-		public UserBoundary getAllUsers(@RequestParam(name = "size", required = false,defaultValue = "10") int size,
-				@RequestParam(name = "page", required = false,defaultValue = "0") int page,
-				@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,
-				@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") String sortOrder) {
-			return userService.getAllUsers(size,page,sortBy,sortOrder);
-		}
-		
-	//Get all users by criteria type with pagination
-		@RequestMapping(path = "/users/search?criteriaType={criteriaType}&criteriaValue={value}&size={size}&page={page}&sortBy={sortAttribute}&sortOrder={order}",
-				method = RequestMethod.GET,
-				produces = MediaType.APPLICATION_JSON_VALUE)
-		public UserBoundary[] getAllUsersByCriteriaType(@RequestParam(name = "criteriaType", required = true) int criteriaType,
-				@RequestParam(name = "criteriaValue", required = true) int criteriaValue,
-				@RequestParam(name = "size", required = false,defaultValue = "10") int size,
-				@RequestParam(name = "page", required = false,defaultValue = "0") int page,
-				@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,
-				@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") String sortOrder) {
-			return userService.getAllUsersByCriteriaType(criteriaType,criteriaValue,size,page,sortBy,sortOrder);
-		}
-			
-	
+
+	// Get all users with pagination
+	@RequestMapping(path = "/users/search?size={size}&page={page}&sortBy={sortAttribute}&sortOrder={order}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserBoundary getAllUsers(@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") String sortOrder) {
+		return userService.getAllUsers(size, page, sortBy, sortOrder);
+	}
+
+	// Get all users by criteria type with pagination
+	@RequestMapping(path = "/users/search?criteriaType={criteriaType}&criteriaValue={value}&size={size}&page={page}&sortBy={sortAttribute}&sortOrder={order}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserBoundary[] getAllUsersByCriteriaType(
+			@RequestParam(name = "criteriaType", required = true) int criteriaType,
+			@RequestParam(name = "criteriaValue", required = true) int criteriaValue,
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") String sortOrder) {
+		return userService.getAllUsersByCriteriaType(criteriaType, criteriaValue, size, page, sortBy, sortOrder);
+	}
+
 	/*--------------------- POST APIS ------------------- */
 
-	//Store user
-	@RequestMapping(path = "/users",
-			method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	// Store user
+	@RequestMapping(path = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserBoundary createNewUser(@RequestBody UserBoundary input) {
 		return userService.createUser(input);
 	}
-	
-	
+
 	/*--------------------- PUT APIS ------------------- */
-	
-	//Update user details
-	@RequestMapping(path = "/users/{email}",
-			method = RequestMethod.PUT,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void updateUser(
-			@PathVariable("email") String email, @RequestBody UserBoundary update) {
+
+	// Update user details
+	@RequestMapping(path = "/users/{email}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void updateUser(@PathVariable("email") String email, @RequestBody UserBoundary update) {
 		userService.updateUser(email, update);
 	}
-	
-
-	
-	
-	
 
 }

@@ -1,38 +1,76 @@
 package acs.data;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-import acs.utils.UserFullName;
+import org.hibernate.annotations.Formula;
 
+import acs.annotations.NotEmptyFields;
+import acs.annotations.Password;
+
+@Entity
 public class UserEntity {
 
-	private String email;// EMAIL PK VARCHAR(255)
-	private UserFullName name; // FIRST VARCHAR(255)
-								// LAST VARCHAR(255)
-	private String password;// PASSWORD VARCHAR(255)
-	private Date birthdate;// CREATED_TIME_STAMP TIMESTAMP
-	private String[] roles;
-
+	@Id
+	@acs.annotations.Email
+	private String email;		// EMAIL PK VARCHAR(255)
+	
+	@NotEmpty
+	private String firstName;	// FIRST VARCHAR(255)
+	
+	@NotEmpty
+	private String lastName;	// LAST VARCHAR(255)
+	
+	@Password
+	private String password;	// PASSWORD VARCHAR(255)
+	
+	@NotNull
+	private Date birthdate;	// CREATED_TIME_STAMP TIMESTAMP
+	
+	//@NotEmptyFields
+	@ElementCollection(targetClass=String.class)
+	private List<String> roles;
+	
+	@Formula("(TIMESTAMPDIFF(YEAR,DATE_FORMAT(birthdate, '%Y-%m-%d'),CURDATE()))")	
+	private int age;	// calculated field by birth date
+	
 	public UserEntity() {
+		this.roles=new ArrayList<>();
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserEntity(String email, UserFullName name, String password, Date birthdate, String[] roles) {
+	public UserEntity(String email, String firstName, String lastName, String password, Date birthdate, List<String> roles) {
 		super();
 		this.email = email;
-		this.name = name;
+		this.firstName=firstName;
+		this.lastName=lastName;
 		this.password = password;
 		this.birthdate = birthdate;
 		this.roles = roles;
 	}
 
-	public UserFullName getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(UserFullName name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getPassword() {
@@ -47,18 +85,18 @@ public class UserEntity {
 		return birthdate;
 	}
 
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
+	public void setBirthdate(Date date) {
+		this.birthdate = date;
 	}
 
-	public String[] getRoles() {
+	public List<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(String[] roles) {
+	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
-
+	
 	public String getEmail() {
 		return email;
 	}
@@ -66,5 +104,19 @@ public class UserEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+	
+	public int getAge(LocalDate birthdate) {
+		int age = LocalDate.now().getYear() - birthdate.getYear() - 1;
+		if(LocalDate.now().getMonthValue()>birthdate.getMonthValue()) {
+			// had birthday
+			age++;
+		}
+		else if(LocalDate.now().getMonthValue()==birthdate.getMonthValue()) {
+			if(LocalDate.now().getDayOfMonth()>=birthdate.getDayOfMonth()) {
+				// had birthday
+				age++;
+			}
+		}
+		return age;
+	}
 }
