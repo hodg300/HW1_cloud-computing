@@ -56,7 +56,7 @@ public class UserDataAccess implements EnhancedUserService {
 				.orElseThrow(() -> new NotFoundException("no user found by email: " + email));
 
 		if (password != null) {
-			if (userEntity.getPassword() != password) {
+			if (!userEntity.getPassword().equals(password)) {
 				throw new UnauthorizedException("wrong password");
 			}
 		}
