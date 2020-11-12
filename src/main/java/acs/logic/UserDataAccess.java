@@ -6,6 +6,11 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +24,8 @@ import acs.logic.utils.UserConverter;
 import acs.utils.CriteriaType;
 import acs.utils.SortOrder;
 import acs.utils.UserFullName;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class UserDataAccess implements EnhancedUserService {
