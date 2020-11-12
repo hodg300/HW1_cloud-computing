@@ -37,7 +37,7 @@ public class UserConverter {
 		rv.setEmail(boundary.getEmail());
 		rv.setPassword(boundary.getPassword());
 		rv.setRoles(new HashSet<String>(Arrays.asList(boundary.getRoles())));
-
+		rv.setAge();
 		return rv;
 	}
 
