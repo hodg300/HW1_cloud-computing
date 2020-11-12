@@ -3,7 +3,9 @@ package acs.data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -37,17 +39,17 @@ public class UserEntity {
 	
 	@NotEmptyFields
 	@ElementCollection(targetClass=String.class)
-	private List<String> roles;
+	 private Set<String> roles;
 	
 	@Formula("YEAR(CURDATE()) - YEAR(birthdate)")	
 	private int age;	// calculated field by birth date
 	
 	public UserEntity() {
-		this.roles=new ArrayList<>();
+		this.roles=new HashSet<>();
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserEntity(String email, String firstName, String lastName, String password, Date birthdate, List<String> roles) {
+	public UserEntity(String email, String firstName, String lastName, String password, Date birthdate, Set<String> roles) {
 		super();
 		this.email = email;
 		this.firstName=firstName;
@@ -89,11 +91,11 @@ public class UserEntity {
 		this.birthdate = date;
 	}
 
-	public List<String> getRoles() {
+	public Set<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
 	

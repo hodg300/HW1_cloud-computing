@@ -2,11 +2,8 @@ package acs.logic.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Date;
-
+import java.util.HashSet;
 import org.springframework.stereotype.Component;
 import acs.boundary.UserBoundary;
 import acs.data.UserEntity;
@@ -39,7 +36,7 @@ public class UserConverter {
 		}
 		rv.setEmail(boundary.getEmail());
 		rv.setPassword(boundary.getPassword());
-		rv.setRoles(Arrays.asList(boundary.getRoles()));
+		rv.setRoles(new HashSet<String>(Arrays.asList(boundary.getRoles())));
 
 		return rv;
 	}
