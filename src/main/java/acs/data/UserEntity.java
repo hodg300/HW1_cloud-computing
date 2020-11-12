@@ -7,18 +7,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Formula;
 
-import javax.persistence.Id;
 import acs.annotations.NotEmptyFields;
 import acs.annotations.Password;
 
 @Entity
+@Table(name = "users")
 public class UserEntity {
 
 	@Id
@@ -26,22 +25,27 @@ public class UserEntity {
 	private String email;		// EMAIL PK VARCHAR(255)
 	
 	@NotEmpty
+	@Column(name = "firstname")
 	private String firstName;	// FIRST VARCHAR(255)
 	
 	@NotEmpty
+	@Column(name = "lastName")
 	private String lastName;	// LAST VARCHAR(255)
 	
 	@Password
+	@Column(name = "password")
 	private String password;	// PASSWORD VARCHAR(255)
 	
 	@NotNull
+	@Column(name = "birthdate")
 	private Date birthdate;	// CREATED_TIME_STAMP TIMESTAMP
 	
 	@NotEmptyFields
 	@ElementCollection(targetClass=String.class)
+	@Column(name = "roles")
 	 private Set<String> roles;
 	
-	@Formula("YEAR(CURDATE()) - YEAR(birthdate)")	
+	@Formula("YEAR(CURDATE()) - YEAR(birthdate)")
 	private int age;	// calculated field by birth date
 	
 	public UserEntity() {

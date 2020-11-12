@@ -7,7 +7,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Pageable;
 
 import acs.data.UserEntity;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserDao  extends PagingAndSortingRepository<UserEntity, String> {	
     public List<UserEntity> findAllByLastNameLike(@Param("lastName") String lastName, Pageable pageable);
     
