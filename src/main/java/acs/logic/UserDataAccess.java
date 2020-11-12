@@ -104,7 +104,6 @@ public class UserDataAccess implements EnhancedUserService {
 	}
 
 	@Override
-
 	@Transactional(readOnly = true)
 	public List<UserBoundary> getAllUsers(int size, int page, String sortBy, String sortOrder) {
 		return this.userDao.findAll(PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy)).getContent()

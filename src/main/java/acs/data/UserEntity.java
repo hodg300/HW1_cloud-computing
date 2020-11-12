@@ -15,7 +15,6 @@ import acs.annotations.NotEmptyFields;
 import acs.annotations.Password;
 
 @Entity
-@Table(name = "users")
 public class UserEntity {
 
     @Id
@@ -90,9 +89,9 @@ public class UserEntity {
         this.birthdate = date;
     }
 
-    public int setAge() {
+    public void setAge() {
         if (this.birthdate != null) {
-            int age = LocalDate.now().getYear() - this.birthdate.getYear() - 1;
+            int age = LocalDate.now().getYear() - this.birthdate.getYear() + 1900 - 1;
             if (LocalDate.now().getMonthValue() > this.birthdate.getMonth()) {
                 // had birthday
                 age++;
@@ -102,9 +101,13 @@ public class UserEntity {
                     age++;
                 }
             }
-            return age;
+            this.age = age;
         }
-        return 0;
+        this.age = 0;
+    }
+
+    public int getAge(){
+        return this.age;
     }
 
     public Set<String> getRoles() {
@@ -123,17 +126,17 @@ public class UserEntity {
         this.email = email;
     }
 
-    public int getAge(LocalDate birthdate) {
-        int age = LocalDate.now().getYear() - birthdate.getYear() - 1;
-        if (LocalDate.now().getMonthValue() > birthdate.getMonthValue()) {
-            // had birthday
-            age++;
-        } else if (LocalDate.now().getMonthValue() == birthdate.getMonthValue()) {
-            if (LocalDate.now().getDayOfMonth() >= birthdate.getDayOfMonth()) {
-                // had birthday
-                age++;
-            }
-        }
-        return age;
-    }
+//    public int getAge(LocalDate birthdate) {
+//        int age = LocalDate.now().getYear() - birthdate.getYear() - 1;
+//        if (LocalDate.now().getMonthValue() > birthdate.getMonthValue()) {
+//            // had birthday
+//            age++;
+//        } else if (LocalDate.now().getMonthValue() == birthdate.getMonthValue()) {
+//            if (LocalDate.now().getDayOfMonth() >= birthdate.getDayOfMonth()) {
+//                // had birthday
+//                age++;
+//            }
+//        }
+//        return age;
+//    }
 }
