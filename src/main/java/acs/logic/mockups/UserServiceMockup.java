@@ -18,7 +18,7 @@ import acs.logic.utils.UserConverter;
 
 
 
-@Service
+//@Service
 public class UserServiceMockup implements EnhancedUserService {
 	private List<UserEntity> allUsers;
 	private UserConverter userConverter;
@@ -76,13 +76,13 @@ public class UserServiceMockup implements EnhancedUserService {
 	}
 
 	@Override
-	public UserBoundary getAllUsers(int size, int page, String sortBy, String sortOrder) {
+	public List<UserBoundary> getAllUsers(int size, int page, String sortBy, String sortOrder) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public UserBoundary[] getAllUsersByCriteriaType(int criteriaType, int criteriaValue, int size, int page,
+	public List<UserBoundary> getAllUsersByCriteriaType(String criteriaType, String criteriaValue, int size, int page,
 			String sortBy, String sortOrder) {
 		// TODO Auto-generated method stub
 		return null;

@@ -1,5 +1,7 @@
 package acs.logic;
 
+import java.util.List;
+
 import acs.boundary.UserBoundary;
 
 public interface UserService {
@@ -14,9 +16,9 @@ public interface UserService {
 	
 	public void deleteAllUsers();
 
-	public UserBoundary getAllUsers(int size, int page, String sortBy, String sortOrder);
+	public List<UserBoundary> getAllUsers(int size, int page, String sortBy, String sortOrder);
 
-	public UserBoundary[] getAllUsersByCriteriaType(int criteriaType, int criteriaValue, int size, int page,
+	public List<UserBoundary> getAllUsersByCriteriaType(String criteriaType, String criteriaValue, int size, int page,
 			String sortBy, String sortOrder);
 	
 	

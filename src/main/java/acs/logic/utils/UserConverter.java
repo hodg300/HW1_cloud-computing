@@ -1,34 +1,43 @@
 package acs.logic.utils;
 
-import java.sql.Date;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.HashSet;
 import org.springframework.stereotype.Component;
-
 import acs.boundary.UserBoundary;
 import acs.data.UserEntity;
+import acs.utils.UserFullName;
 
 @Component
 public class UserConverter {
 
 	public UserBoundary fromEntity(UserEntity entity) {
 		UserBoundary rv = new UserBoundary();
-		rv.setName(entity.getName());
-		rv.setBirthdate(entity.getBirthdate().toString());
+		UserFullName name = new UserFullName(entity.getFirstName(), entity.getLastName());
+		rv.setName(name);		
+		rv.setBirthdate(new SimpleDateFormat("dd-MM-yyyy").format(entity.getBirthdate()));
 		rv.setEmail(entity.getEmail());
-		rv.setRoles(entity.getRoles());
-		
+		rv.setPassword(entity.getPassword());
+		rv.setRoles(entity.getRoles().toArray(new String[0]));
 
 		return rv;
 	}
 
 	public UserEntity toEntity(UserBoundary boundary) {
 		UserEntity rv = new UserEntity();
-		rv.setName(boundary.getName());
-		rv.setBirthdate(Date.valueOf(boundary.getBirthdate()));
+		rv.setFirstName(boundary.getName().getFirst());
+		rv.setLastName(boundary.getName().getLast());
+		//rv.setBirthdate(LocalDate.parse(boundary.getBirthdate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+		try {
+			rv.setBirthdate(new SimpleDateFormat("dd-MM-yyyy").parse(boundary.getBirthdate()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		rv.setEmail(boundary.getEmail());
 		rv.setPassword(boundary.getPassword());
-		rv.setRoles(boundary.getRoles());
-
+		rv.setRoles(new HashSet<String>(Arrays.asList(boundary.getRoles())));
+		rv.setAge();
 		return rv;
 	}
 
