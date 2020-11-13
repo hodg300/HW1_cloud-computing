@@ -76,13 +76,7 @@ public class UserServiceMockup implements EnhancedUserService {
 	}
 
 	@Override
-	public List<UserBoundary> getAllUsers(int size, int page, String sortBy, String sortOrder) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<UserBoundary> getAllUsersByCriteriaType(String criteriaType, String criteriaValue, int size, int page,
+	public List<UserBoundary> getAllUsers(String criteriaType, String criteriaValue, int size, int page,
 			String sortBy, String sortOrder) {
 		// TODO Auto-generated method stub
 		return null;

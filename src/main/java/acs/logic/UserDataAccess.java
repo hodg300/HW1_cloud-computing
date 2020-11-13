@@ -105,14 +105,7 @@ public class UserDataAccess implements EnhancedUserService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<UserBoundary> getAllUsers(int size, int page, String sortBy, String sortOrder) {
-		return this.userDao.findAll(PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy)).getContent()
-				.stream().map(this.converter::fromEntity).collect(Collectors.toList());
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public List<UserBoundary> getAllUsersByCriteriaType(String criteriaType, String criteriaValue, int size, int page,
+	public List<UserBoundary> getAllUsers(String criteriaType, String criteriaValue, int size, int page,
 			String sortBy, String sortOrder) {
 		if (criteriaType != null && criteriaValue != null) {
 			if (criteriaType.equals(CriteriaType.BY_LAST_NAME.toString())) {

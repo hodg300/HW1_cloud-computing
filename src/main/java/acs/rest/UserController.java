@@ -58,14 +58,14 @@ public class UserController {
 
 	// Get all users by criteria type with pagination
 	@RequestMapping(path = "/users/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserBoundary[] getAllUsersByCriteriaType(
+	public UserBoundary[] getAllUsers(
 			@RequestParam(name = "criteriaType", required = false) String criteriaType,
 			@RequestParam(name = "criteriaValue", required = false) String criteriaValue,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,
 			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") String sortOrder) {
-		return userService.getAllUsersByCriteriaType(criteriaType, criteriaValue, size, page, sortBy, sortOrder).toArray(new UserBoundary[0]);
+		return userService.getAllUsers(criteriaType, criteriaValue, size, page, sortBy, sortOrder).toArray(new UserBoundary[0]);
 	}
 
 	/*--------------------- POST APIS ------------------- */
