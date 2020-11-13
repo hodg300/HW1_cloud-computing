@@ -38,7 +38,7 @@ public class UserEntity {
     @ElementCollection(targetClass = String.class)
     private Set<String> roles;
 
-    //	@Formula("YEAR(CURDATE()) - YEAR(birthdate)")
+    @Formula("DATE_PART('YEAR', AGE(birthdate))::int")
     private int age;    // calculated field by birth date
 
 
@@ -89,21 +89,8 @@ public class UserEntity {
         this.birthdate = date;
     }
 
-    public void setAge() {
-        if (this.birthdate != null) {
-            int age = LocalDate.now().getYear() - this.birthdate.getYear() + 1900 - 1;
-            if (LocalDate.now().getMonthValue() > this.birthdate.getMonth()) {
-                // had birthday
-                age++;
-            } else if (LocalDate.now().getMonthValue() == this.birthdate.getMonth()) {
-                if (LocalDate.now().getDayOfMonth() >= this.birthdate.getDay()) {
-                    // had birthday
-                    age++;
-                }
-            }
-            this.age = age;
-        }
-        this.age = 0;
+    public void setAge(int age) {
+        this.age=age;
     }
 
     public int getAge(){

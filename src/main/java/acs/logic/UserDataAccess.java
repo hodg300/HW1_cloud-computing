@@ -117,7 +117,7 @@ public class UserDataAccess implements EnhancedUserService {
 		if (criteriaType != null && criteriaValue != null) {
 			if (criteriaType.equals(CriteriaType.BY_LAST_NAME.toString())) {
 				return this.userDao
-						.findAllByLastNameLike(criteriaValue,
+						.findAllByLastNameLikeIgnoreCase(criteriaValue,
 								PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy))
 						.stream().map(this.converter::fromEntity).collect(Collectors.toList());
 			} else if (criteriaType.equals(CriteriaType.BY_MINIMUM_AGE.toString())) {
@@ -130,10 +130,7 @@ public class UserDataAccess implements EnhancedUserService {
 						.findAllByRole(criteriaValue, PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy))
 						.stream().map(this.converter::fromEntity).collect(Collectors.toList());
 			}
-			return this.userDao
-					.findAllByLastNameLike(criteriaValue,
-							PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy))
-					.stream().map(this.converter::fromEntity).collect(Collectors.toList());		}
+		}
 		return this.userDao.findAll(PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy)).getContent()
 		.stream().map(this.converter::fromEntity).collect(Collectors.toList());
 		// throw new BadRequestException();

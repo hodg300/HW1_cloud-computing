@@ -10,11 +10,11 @@ import acs.data.UserEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserDao  extends PagingAndSortingRepository<UserEntity, String> {	
-    public List<UserEntity> findAllByLastNameLike(@Param("lastName") String lastName, Pageable pageable);
+public interface UserDao  extends PagingAndSortingRepository<UserEntity, String> {
+    List<UserEntity> findAllByLastNameLikeIgnoreCase(@Param("lastName") String lastName, Pageable pageable);
     
-    public List<UserEntity> findAllByAgeGreaterThan(@Param("age") int age, Pageable pageable);
-    
+    List<UserEntity> findAllByAgeGreaterThan(@Param("age") int age, Pageable pageable);
+
     @Query("select user from UserEntity user WHERE :role in elements(user.roles)")
-    public List<UserEntity> findAllByRole(@Param("role") String role, Pageable pageable);
+    List<UserEntity> findAllByRole(@Param("role") String role, Pageable pageable);
 }
