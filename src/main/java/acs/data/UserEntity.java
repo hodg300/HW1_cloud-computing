@@ -87,14 +87,6 @@ public class UserEntity {
         this.birthdate = date;
     }
 
-    public void setAge(int age) {
-        this.age=age;
-    }
-
-    public int getAge(){
-        return this.age;
-    }
-
     public Set<String> getRoles() {
         return roles;
     }
@@ -111,17 +103,4 @@ public class UserEntity {
         this.email = email;
     }
 
-//    public int getAge(LocalDate birthdate) {
-//        int age = LocalDate.now().getYear() - birthdate.getYear() - 1;
-//        if (LocalDate.now().getMonthValue() > birthdate.getMonthValue()) {
-//            // had birthday
-//            age++;
-//        } else if (LocalDate.now().getMonthValue() == birthdate.getMonthValue()) {
-//            if (LocalDate.now().getDayOfMonth() >= birthdate.getDayOfMonth()) {
-//                // had birthday
-//                age++;
-//            }
-//        }
-//        return age;
-//    }
 }

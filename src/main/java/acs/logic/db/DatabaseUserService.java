@@ -4,6 +4,7 @@ import acs.boundary.UserBoundaryWithPassword;
 import acs.exceptions.AlreadyExistsException;
 import acs.logic.EnhancedUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -138,7 +139,7 @@ public class DatabaseUserService implements EnhancedUserService {
 						.stream().map(this.converter::fromEntity).collect(Collectors.toList());
 			}
 		}
-		return this.userDao.findAllMor(PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy))
+		return this.userDao.findAll(PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy)).getContent()
 		.stream().map(this.converter::fromEntity).collect(Collectors.toList());
 		// throw new BadRequestException();
 	}

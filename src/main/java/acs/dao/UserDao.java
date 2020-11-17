@@ -24,7 +24,5 @@ public interface UserDao  extends JpaRepository<UserEntity, String> {
     @Query("select user from UserEntity user WHERE :role in elements(user.roles)")
     List<UserEntity> findAllByRole(@Param("role") String role, Pageable pageable);
 
-    @Query("select user from UserEntity")
-    List<UserEntity> findAllMor(Pageable pageable);
 
 }
