@@ -1,31 +1,30 @@
 package acs.data;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import acs.annotations.Email;
+import acs.annotations.NotEmptyFields;
 import org.hibernate.annotations.Formula;
 
-import acs.annotations.NotEmptyFields;
 import acs.annotations.Password;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
+@Table(name="USERS")
 public class UserEntity {
 
     @Id
-    @acs.annotations.Email
+    @Email
     private String email;        // EMAIL PK VARCHAR(255)
 
-    @NotEmpty
-
+    @NotEmpty(message="First name can not be empty")
     private String firstName;    // FIRST VARCHAR(255)
 
-    @NotEmpty
+    @NotEmpty(message="Last name can not be empty")
     private String lastName;    // LAST VARCHAR(255)
 
     @Password
@@ -34,17 +33,16 @@ public class UserEntity {
     @NotNull
     private Date birthdate;    // CREATED_TIME_STAMP TIMESTAMP
 
+    @Lob
     @NotEmptyFields
-    @ElementCollection(targetClass = String.class)
-    private Set<String> roles;
+    @Convert(converter = acs.logic.utils.SetToJsonConverter.class)
+    public Set<String> roles;
 
     @Formula("DATE_PART('YEAR', AGE(birthdate))::int")
     private int age;    // calculated field by birth date
 
-
     public UserEntity() {
         this.roles = new HashSet<>();
-        // TODO Auto-generated constructor stub
     }
 
     public UserEntity(String email, String firstName, String lastName, String password, Date birthdate, Set<String> roles) {
@@ -81,20 +79,13 @@ public class UserEntity {
         this.password = password;
     }
 
-    public Date getBirthdate() {
-        return birthdate;
-    }
+    public Date getBirthdate() { return birthdate; }
 
     public void setBirthdate(Date date) {
+        if(date.after(new Date())){
+            throw new RuntimeException("Date is illegal");
+        }
         this.birthdate = date;
-    }
-
-    public void setAge(int age) {
-        this.age=age;
-    }
-
-    public int getAge(){
-        return this.age;
     }
 
     public Set<String> getRoles() {
@@ -113,17 +104,4 @@ public class UserEntity {
         this.email = email;
     }
 
-//    public int getAge(LocalDate birthdate) {
-//        int age = LocalDate.now().getYear() - birthdate.getYear() - 1;
-//        if (LocalDate.now().getMonthValue() > birthdate.getMonthValue()) {
-//            // had birthday
-//            age++;
-//        } else if (LocalDate.now().getMonthValue() == birthdate.getMonthValue()) {
-//            if (LocalDate.now().getDayOfMonth() >= birthdate.getDayOfMonth()) {
-//                // had birthday
-//                age++;
-//            }
-//        }
-//        return age;
-//    }
 }

@@ -1,5 +1,6 @@
 package acs.rest;
 
+import acs.boundary.UserBoundaryWithPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,7 +73,7 @@ public class UserController {
 
 	// Store user
 	@RequestMapping(path = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserBoundary createNewUser(@RequestBody UserBoundary input) {
+	public UserBoundary createNewUser(@RequestBody UserBoundaryWithPassword input) {
 		return userService.createUser(input);
 	}
 
@@ -80,7 +81,7 @@ public class UserController {
 
 	// Update user details
 	@RequestMapping(path = "/users/{email}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void updateUser(@PathVariable("email") String email, @RequestBody UserBoundary update) {
+	public void updateUser(@PathVariable("email") String email, @RequestBody UserBoundaryWithPassword update) {
 		userService.updateUser(email, update);
 	}
 

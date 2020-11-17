@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashSet;
+import acs.boundary.UserBoundaryWithPassword;
 import org.springframework.stereotype.Component;
 import acs.boundary.UserBoundary;
 import acs.data.UserEntity;
@@ -18,17 +19,15 @@ public class UserConverter {
 		rv.setName(name);		
 		rv.setBirthdate(new SimpleDateFormat("dd-MM-yyyy").format(entity.getBirthdate()));
 		rv.setEmail(entity.getEmail());
-		rv.setPassword(entity.getPassword());
 		rv.setRoles(entity.getRoles().toArray(new String[0]));
 
 		return rv;
 	}
 
-	public UserEntity toEntity(UserBoundary boundary) {
+	public UserEntity toEntity(UserBoundaryWithPassword boundary) {
 		UserEntity rv = new UserEntity();
 		rv.setFirstName(boundary.getName().getFirst());
 		rv.setLastName(boundary.getName().getLast());
-		//rv.setBirthdate(LocalDate.parse(boundary.getBirthdate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 		try {
 			rv.setBirthdate(new SimpleDateFormat("dd-MM-yyyy").parse(boundary.getBirthdate()));
 		} catch (ParseException e) {
@@ -39,5 +38,4 @@ public class UserConverter {
 		rv.setRoles(new HashSet<>(Arrays.asList(boundary.getRoles())));
 		return rv;
 	}
-
 }

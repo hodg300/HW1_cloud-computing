@@ -23,7 +23,7 @@ public class AdminController {
 
 	@RequestMapping(path = "/users",
 			method = RequestMethod.DELETE)
-	public void deleteAllActions() {
+	public void deleteAllUsers() {
 		this.enhancedUserService.deleteAllUsers();
 	}
 
