@@ -3,16 +3,17 @@ package acs.logic;
 import java.util.List;
 
 import acs.boundary.UserBoundary;
+import acs.boundary.UserBoundaryWithPassword;
 
 public interface UserService {
 
-	UserBoundary createUser(UserBoundary userBoundary);
+	UserBoundary createUser(UserBoundaryWithPassword userBoundary);
 
 	UserBoundary getUser(String email);
 	
 	UserBoundary login(String email, String password);
 
-	void updateUser(String email, UserBoundary update);
+	void updateUser(String email, UserBoundaryWithPassword update);
 	
 	void deleteAllUsers();
 

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import acs.annotations.Email;
@@ -12,6 +11,7 @@ import acs.annotations.NotEmptyFields;
 import org.hibernate.annotations.Formula;
 
 import acs.annotations.Password;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="USERS")
@@ -21,10 +21,10 @@ public class UserEntity {
     @Email
     private String email;        // EMAIL PK VARCHAR(255)
 
-    @NotEmpty
+    @NotEmpty(message="First name can not be empty")
     private String firstName;    // FIRST VARCHAR(255)
 
-    @NotEmpty
+    @NotEmpty(message="Last name can not be empty")
     private String lastName;    // LAST VARCHAR(255)
 
     @Password

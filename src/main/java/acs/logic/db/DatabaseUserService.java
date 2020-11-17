@@ -1,5 +1,6 @@
 package acs.logic.db;
 
+import acs.boundary.UserBoundaryWithPassword;
 import acs.exceptions.AlreadyExistsException;
 import acs.logic.EnhancedUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ import acs.utils.SortOrder;
 import acs.utils.UserFullName;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 @Service
 public class DatabaseUserService implements EnhancedUserService {
@@ -42,7 +45,7 @@ public class DatabaseUserService implements EnhancedUserService {
 
 	@Override
 	@Transactional
-	public UserBoundary createUser(UserBoundary userBoundary) {
+	public UserBoundary createUser(UserBoundaryWithPassword userBoundary) {
 
 		UserEntity userEntity = this.converter.toEntity(userBoundary);
 		UserEntity user = this.userDao.findByEmail(userEntity.getEmail());
@@ -68,11 +71,10 @@ public class DatabaseUserService implements EnhancedUserService {
 		UserEntity userEntity = this.userDao.findById(email)
 				.orElseThrow(() -> new NotFoundException("no user found by email: " + email));
 
-		if (password != null) {
-			if (!userEntity.getPassword().equals(password)) {
-				throw new UnauthorizedException("wrong password");
-			}
+		if (!userEntity.getPassword().equals(password)) {
+			throw new UnauthorizedException("wrong password");
 		}
+
 
 		return this.converter.fromEntity(userEntity);
 
@@ -80,27 +82,33 @@ public class DatabaseUserService implements EnhancedUserService {
 
 	@Override
 	@Transactional
-	public void updateUser(String email, UserBoundary update) {
-		UserBoundary user = this.converter.fromEntity(this.userDao.findById(email)
-				.orElseThrow(() -> new NotFoundException("no user found by email: " + email)));
+	public void updateUser(String email, UserBoundaryWithPassword update) {
+		UserEntity userEntity = this.userDao.findById(email)
+				.orElseThrow(() -> new NotFoundException("no user found by email: " + email));
+		String password = userEntity.getPassword();
 
-		if (update.getName().getFirst() != null) {
-			user.setName(new UserFullName(update.getName().getFirst(), user.getName().getLast()));
-		}
-		if (update.getName().getLast() != null) {
-			user.setName(new UserFullName(user.getName().getFirst(), update.getName().getLast()));
-		}
-		if (update.getPassword() != null) {
-			user.setPassword(update.getPassword());
-		}
-		if (update.getBirthdate() != null) {
-			user.setBirthdate(update.getBirthdate());
-		}
-		if (update.getRoles() != null) {
-			user.setRoles(update.getRoles());
+		UserBoundary user = this.converter.fromEntity(userEntity);
+
+		if (update.getName().getFirst() == null) {
+			update.setName(new UserFullName(user.getName().getFirst(), update.getName().getLast()));
 		}
 
-		this.userDao.save(this.converter.toEntity(user));
+		if (update.getName().getLast() == null) {
+			update.setName(new UserFullName(update.getName().getFirst(), user.getName().getLast()));
+		}
+
+		if (update.getPassword() == null) {
+			update.setPassword(password);
+		}
+
+		if (update.getBirthdate() == null) {
+			update.setBirthdate(user.getBirthdate());
+		}
+		if (update.getRoles() == null) {
+			update.setRoles(user.getRoles());
+		}
+
+		this.userDao.save(this.converter.toEntity(update));
 	}
 
 	@Override
@@ -130,7 +138,7 @@ public class DatabaseUserService implements EnhancedUserService {
 						.stream().map(this.converter::fromEntity).collect(Collectors.toList());
 			}
 		}
-		return this.userDao.findAll(PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy)).getContent()
+		return this.userDao.findAllMor(PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy))
 		.stream().map(this.converter::fromEntity).collect(Collectors.toList());
 		// throw new BadRequestException();
 	}
