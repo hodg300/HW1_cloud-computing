@@ -28,7 +28,6 @@ public class UserConverter {
 		UserEntity rv = new UserEntity();
 		rv.setFirstName(boundary.getName().getFirst());
 		rv.setLastName(boundary.getName().getLast());
-		//rv.setBirthdate(LocalDate.parse(boundary.getBirthdate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 		try {
 			rv.setBirthdate(new SimpleDateFormat("dd-MM-yyyy").parse(boundary.getBirthdate()));
 		} catch (ParseException e) {

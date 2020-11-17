@@ -1,5 +1,7 @@
-package acs.logic;
+package acs.logic.db;
 
+import acs.exceptions.AlreadyExistsException;
+import acs.logic.EnhancedUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -28,12 +30,12 @@ import acs.utils.UserFullName;
 import javax.annotation.PostConstruct;
 
 @Service
-public class UserDataAccess implements EnhancedUserService {
+public class DatabaseUserService implements EnhancedUserService {
 	private UserDao userDao; // Data access object
 	private UserConverter converter;
 
 	@Autowired
-	public UserDataAccess(UserDao userDao, UserConverter converter) {
+	public DatabaseUserService(UserDao userDao, UserConverter converter) {
 		this.userDao = userDao;
 		this.converter = converter;
 	}
@@ -41,9 +43,13 @@ public class UserDataAccess implements EnhancedUserService {
 	@Override
 	@Transactional
 	public UserBoundary createUser(UserBoundary userBoundary) {
-		UserEntity userEntity = this.converter.toEntity(userBoundary);
-		userEntity = this.userDao.save(userEntity);
 
+		UserEntity userEntity = this.converter.toEntity(userBoundary);
+		UserEntity user = this.userDao.findByEmail(userEntity.getEmail());
+		if(user != null){
+			throw new AlreadyExistsException("User is already exists");
+		}
+		userEntity = this.userDao.save(userEntity);
 		return this.converter.fromEntity(userEntity);
 	}
 

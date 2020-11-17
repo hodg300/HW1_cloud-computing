@@ -1,28 +1,27 @@
 package acs.data;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import acs.annotations.Email;
+import acs.annotations.NotEmptyFields;
 import org.hibernate.annotations.Formula;
 
-import acs.annotations.NotEmptyFields;
 import acs.annotations.Password;
 
 @Entity
+@Table(name="USERS")
 public class UserEntity {
 
     @Id
-    @acs.annotations.Email
+    @Email
     private String email;        // EMAIL PK VARCHAR(255)
 
     @NotEmpty
-
     private String firstName;    // FIRST VARCHAR(255)
 
     @NotEmpty
@@ -44,7 +43,6 @@ public class UserEntity {
 
     public UserEntity() {
         this.roles = new HashSet<>();
-        // TODO Auto-generated constructor stub
     }
 
     public UserEntity(String email, String firstName, String lastName, String password, Date birthdate, Set<String> roles) {
