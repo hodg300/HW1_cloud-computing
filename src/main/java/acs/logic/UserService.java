@@ -14,15 +14,8 @@ public interface UserService {
 	UserBoundary login(String email, String password);
 
 	void updateUser(String email, UserBoundaryWithPassword update);
-	
-	void deleteAllUsers();
-
-//	List<UserBoundary> getAllUsers(int size, int page, String sortBy, String sortOrder);
 
 	List<UserBoundary> getAllUsers(String criteriaType, String criteriaValue, int size, int page,
 			String sortBy, String sortOrder);
-	
-	
 
-	
 }

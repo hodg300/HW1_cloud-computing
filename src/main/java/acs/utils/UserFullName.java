@@ -30,25 +30,4 @@ public class UserFullName {
 		this.last = last;
 	}
 
-	public void validate() {
-		
-		if(first == null) {
-			throw new RuntimeException("first name was not instantiate");
-		}
-		
-		if(first.isEmpty()) {
-			throw new RuntimeException("first name can not be empty");
-		}
-		
-		if(last == null) {
-			throw new RuntimeException("last name was not instantiate");
-		}
-		
-		if(last.isEmpty()) {
-			throw new RuntimeException("last name can not be empty");
-		}
-		
-	}
-	
-	
 }

@@ -4,34 +4,21 @@ import acs.boundary.UserBoundaryWithPassword;
 import acs.exceptions.AlreadyExistsException;
 import acs.logic.EnhancedUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import acs.boundary.UserBoundary;
 import acs.dao.UserDao;
 import acs.data.UserEntity;
-import acs.exceptions.BadRequestException;
 import acs.exceptions.NotFoundException;
 import acs.exceptions.UnauthorizedException;
 import acs.logic.utils.UserConverter;
 import acs.utils.CriteriaType;
-import acs.utils.SortOrder;
 import acs.utils.UserFullName;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 @Service
 public class DatabaseUserService implements EnhancedUserService {
@@ -47,7 +34,6 @@ public class DatabaseUserService implements EnhancedUserService {
 	@Override
 	@Transactional
 	public UserBoundary createUser(UserBoundaryWithPassword userBoundary) {
-
 		UserEntity userEntity = this.converter.toEntity(userBoundary);
 		UserEntity user = this.userDao.findByEmail(userEntity.getEmail());
 		if(user != null){
@@ -87,6 +73,8 @@ public class DatabaseUserService implements EnhancedUserService {
 		UserEntity userEntity = this.userDao.findById(email)
 				.orElseThrow(() -> new NotFoundException("no user found by email: " + email));
 		String password = userEntity.getPassword();
+
+		update.setEmail(email);
 
 		UserBoundary user = this.converter.fromEntity(userEntity);
 
@@ -134,14 +122,19 @@ public class DatabaseUserService implements EnhancedUserService {
 								PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy))
 						.stream().map(this.converter::fromEntity).collect(Collectors.toList());
 			} else if (criteriaType.equals(CriteriaType.BY_ROLE.toString())) {
-				return this.userDao
-						.findAllByRole(criteriaValue, PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy))
-						.stream().map(this.converter::fromEntity).collect(Collectors.toList());
+				return findAllByRole(criteriaValue, size, page, sortBy, sortOrder);
 			}
 		}
 		return this.userDao.findAll(PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy)).getContent()
 		.stream().map(this.converter::fromEntity).collect(Collectors.toList());
 		// throw new BadRequestException();
 	}
+
+	public List<UserBoundary> findAllByRole(String criteriaValue, int size, int page, String sortBy, String sortOrder){
+		return this.userDao.findAll(PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy)).stream()
+				.filter(userEntity -> userEntity.roles.contains(criteriaValue))
+				.map(this.converter::fromEntity).collect(Collectors.toList());
+	}
+
 
 }

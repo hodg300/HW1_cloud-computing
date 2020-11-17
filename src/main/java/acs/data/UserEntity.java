@@ -33,13 +33,13 @@ public class UserEntity {
     @NotNull
     private Date birthdate;    // CREATED_TIME_STAMP TIMESTAMP
 
+    @Lob
     @NotEmptyFields
-    @ElementCollection(targetClass = String.class)
-    private Set<String> roles;
+    @Convert(converter = acs.logic.utils.SetToJsonConverter.class)
+    public Set<String> roles;
 
     @Formula("DATE_PART('YEAR', AGE(birthdate))::int")
     private int age;    // calculated field by birth date
-
 
     public UserEntity() {
         this.roles = new HashSet<>();
@@ -79,11 +79,12 @@ public class UserEntity {
         this.password = password;
     }
 
-    public Date getBirthdate() {
-        return birthdate;
-    }
+    public Date getBirthdate() { return birthdate; }
 
     public void setBirthdate(Date date) {
+        if(date.after(new Date())){
+            throw new RuntimeException("Date is illegal");
+        }
         this.birthdate = date;
     }
 
