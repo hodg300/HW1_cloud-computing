@@ -21,7 +21,7 @@ public class AdminController {
 	
 	/*--------------------- DELETE APIS ------------------- */
 
-	@RequestMapping(path = "/comments/{email}/{commentId}",
+	@RequestMapping(path = "/users",
 			method = RequestMethod.DELETE)
 	public void deleteAllUsers() {
 		this.enhancedUserService.deleteAllUsers();
