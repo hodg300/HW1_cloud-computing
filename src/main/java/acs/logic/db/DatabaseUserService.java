@@ -62,7 +62,6 @@ public class DatabaseUserService implements EnhancedUserService {
 			throw new UnauthorizedException("wrong password");
 		}
 
-
 		return this.converter.fromEntity(userEntity);
 
 	}

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import acs.annotations.Email;
@@ -11,7 +12,6 @@ import acs.annotations.NotEmptyFields;
 import org.hibernate.annotations.Formula;
 
 import acs.annotations.Password;
-import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="USERS")
